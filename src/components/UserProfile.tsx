@@ -8,11 +8,10 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuLabel, 
-  DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from './ui/dropdown-menu'
 import { AuthDialog } from './AuthDialog'
-import { User, LogOut, Settings, FileText, BarChart3 } from 'lucide-react'
+import {  LogOut, } from 'lucide-react'
 
 export const UserProfile: React.FC = () => {
   const [authDialogOpen, setAuthDialogOpen] = useState(false)

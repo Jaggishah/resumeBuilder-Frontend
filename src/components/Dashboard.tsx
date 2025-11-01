@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Header } from './Header'
 import { AppSidebar } from './Sidebar'
 import { WelcomeMessage } from './WelcomeMessage'
-import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { setActiveSection } from '../../redux/features/resumeSlice'
 

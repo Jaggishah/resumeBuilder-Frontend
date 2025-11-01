@@ -7,12 +7,10 @@ import { Upload, Download, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import SaveResumeDialog from '../components/SaveResumeDialog'
 import { downloadWithReactToPrint } from '../utils/downloadUtils'
-import { useSaveResumeMutation } from '../../redux/features/api/apiSlice'
 import { useState } from 'react'
 
 export function BuilderPage() {
   const resumeData = useAppSelector((state: RootState) => state.resume)
-  const [saveResume] = useSaveResumeMutation()
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
 
   const handlePrintToPDF = async () => {

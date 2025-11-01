@@ -1,15 +1,13 @@
 import { useState } from 'react'
-import { Download, FileText, Share2, Printer, Copy, Code, FileJson, Type } from 'lucide-react'
+import { Download, Share2, Printer,  FileJson, Type } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useAppSelector } from '../../redux/hooks'
-import type { RootState } from '../../redux/store'
+
 
 // import { ResumePreview } from '../components/ResumePreview'
 
 export function DownloadPage() {
-  const resumeData = useAppSelector((state: RootState) => state.resume)
   const [isDownloading, setIsDownloading] = useState<string | null>(null)
-  const [shareableLink, setShareableLink] = useState<string>('')
+
 
   const handleDownload = async (format: string, downloadFn: () => Promise<void> | void) => {
     setIsDownloading(format)
@@ -25,27 +23,7 @@ export function DownloadPage() {
 
 
   const downloadOptions = [
-    {
-      id: 'pdf',
-      title: 'PDF Download',
-      description: 'Best for job applications and printing',
-      icon: FileText,
-      color: 'text-red-600',
-      action: async () => {
-        await downloadAsPDF(`${resumeData.personalInfo.name || 'resume'}`)
-      },
-      primary: true
-    },
-    {
-      id: 'html',
-      title: 'HTML File',
-      description: 'Viewable in any web browser',
-      icon: Code,
-      color: 'text-orange-600',
-      action: () => {
-        downloadAsHTML(resumeData, resumeData.personalInfo.name || 'resume')
-      }
-    },
+
     {
       id: 'text',
       title: 'Plain Text',
@@ -106,8 +84,8 @@ export function DownloadPage() {
                 <h3 className="font-semibold text-gray-900 mb-2">{option.title}</h3>
                 <p className="text-sm text-gray-600 mb-4">{option.description}</p>
                 <Button 
-                  className={`w-full ${option.primary ? '' : 'variant-outline'}`}
-                  variant={option.primary ? 'default' : 'outline'}
+                  className={`w-full  variant-outline}`}
+                  variant={ 'outline'}
                   onClick={() => handleDownload(option.id, option.action)}
                   disabled={isLoading}
                 >
@@ -123,26 +101,7 @@ export function DownloadPage() {
           })}
         </div>
         
-        {shareableLink && (
-          <div className="mt-6 p-4 bg-purple-50 rounded-lg">
-            <h4 className="font-medium text-purple-900 mb-2">Shareable Link Generated:</h4>
-            <div className="flex items-center space-x-2">
-              <input 
-                type="text" 
-                value={shareableLink} 
-                readOnly 
-                className="flex-1 p-2 border border-purple-200 rounded text-sm"
-              />
-              <Button 
-                size="sm" 
-                variant="outline"
-                onClick={() => copyToClipboard(shareableLink)}
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        )}
+ 
         
         <div className="mt-8 p-4 bg-blue-50 rounded-lg">
           <h4 className="font-medium text-blue-900 mb-2">Download Tips:</h4>

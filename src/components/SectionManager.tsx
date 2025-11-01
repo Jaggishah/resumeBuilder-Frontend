@@ -129,7 +129,18 @@ export const SectionManager = () => {
     <div className="space-y-6">
       {/* Add Section Button */}
       <div className="flex justify-center">
-        <AddSectionDialog onAddSection={handleAddSection} />
+        <AddSectionDialog 
+          onAddSection={handleAddSection} 
+          existingSections={sections.map(section => ({
+            id: section.id,
+            title: section.title,
+            template: 'custom', // Since this is a standalone section manager
+            hasDuration: section.hasDuration,
+            hasAchievements: section.hasAchievements,
+            isPersonal: false,
+            items: section.items
+          }))}
+        />
       </div>
 
       {/* Render all sections */}

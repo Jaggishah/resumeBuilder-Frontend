@@ -3,7 +3,7 @@ import { useAppSelector } from '../../redux/hooks'
 import { AuthDialog } from './AuthDialog'
 import { useState } from 'react'
 import { Button } from './ui/button'
-import { FileText, Zap, Download, BarChart3, Shield, Star, Check } from 'lucide-react'
+import { FileText, Zap, BarChart3, Star, Check } from 'lucide-react'
 
 interface AuthGuardProps {
   children: React.ReactNode

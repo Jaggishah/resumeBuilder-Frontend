@@ -1,7 +1,6 @@
 
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { UserProfile } from './UserProfile'
-import { useNavigate } from 'react-router-dom'
 
 interface HeaderProps {
   activeSection: string

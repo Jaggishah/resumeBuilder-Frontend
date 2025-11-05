@@ -6,5 +6,6 @@
     }
   ],
   "buildCommand": "npm run build:prerender",
+  "installCommand": "npm install --legacy-peer-deps",
   "outputDirectory": "dist"
 }

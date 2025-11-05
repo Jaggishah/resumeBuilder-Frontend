@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ATSFileUploader, type ATSInputData } from '../components/ATSFileUploader'
 import { ATSAnalysisResults, type ATSAnalysisResult } from '../components/ATSAnalysisResults'
+import { SEO } from '../components/SEO'
 import { useAnalyzeATSMutation } from '../../redux/features/api/apiSlice'
 import { Button } from '../components/ui/button'
 import { Zap, AlertTriangle } from 'lucide-react'
@@ -38,7 +39,13 @@ export function ATSCheckerPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <>
+      <SEO 
+        title="ATS Checker - Optimize Your Resume for Applicant Tracking Systems"
+        description="Check how well your resume passes through ATS systems. Get detailed analysis, keyword matching, and optimization suggestions to improve your job application success rate."
+        keywords="ATS checker, applicant tracking system, resume optimization, ATS analysis, keyword matching, resume scanner, job application"
+      />
+      <div className="max-w-6xl mx-auto space-y-6">
 
       {/* Input Section */}
       <ATSFileUploader 
@@ -104,8 +111,7 @@ export function ATSCheckerPage() {
           </p>
         </div>
       )}
-
-    
-    </div>
+      </div>
+    </>
   )
 }

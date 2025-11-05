@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '../components/ui/button'
 import { Label } from '../components/ui/label'
 import { Textarea } from '../components/ui/textarea'
+import { SEO } from '../components/SEO'
 import { useSubmitFeedbackMutation } from '../../redux/features/api/apiSlice'
 import { Send, Heart, AlertCircle } from 'lucide-react'
 
@@ -71,7 +72,13 @@ export const FeedbackPage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <>
+      <SEO 
+        title="Feedback - Help Us Improve Write Yourself"
+        description="Share your feedback, suggestions, or report issues to help us improve Write Yourself. We value your input and continuously work to enhance your experience."
+        keywords="feedback, suggestions, bug report, user feedback, contact us, support"
+      />
+      <div className="max-w-4xl mx-auto p-6">
 
       {/* Feedback Form */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -120,9 +127,8 @@ export const FeedbackPage = () => {
           </div>
         </form>
       </div>
-
-
-    </div>
+      </div>
+    </>
   )
   
 }

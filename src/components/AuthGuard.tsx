@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAppSelector } from '../../redux/hooks'
 import { AuthDialog } from './AuthDialog'
+import { SEO } from './SEO'
 import { useState } from 'react'
 import { Button } from './ui/button'
 import { FileText, Zap, BarChart3, Star, Check } from 'lucide-react'
@@ -65,7 +66,13 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children, fallback }) => {
 
   // Default welcome screen with prominent Google Auth
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-indigo-100 relative overflow-hidden">
+    <>
+      <SEO 
+        title="Write Yourself - AI-Powered Resume Builder"
+        description="Create professional, ATS-friendly resumes with AI-powered enhancements. Build, optimize, and download your perfect resume in minutes with our intelligent resume builder."
+        keywords="resume builder, AI resume, ATS resume, professional resume, resume maker, CV builder, job application, career tools, resume templates, resume optimization"
+      />
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-indigo-100 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-pulse"></div>
@@ -79,7 +86,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children, fallback }) => {
           <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/40 px-8 py-4 flex items-center justify-between min-w-[400px] max-w-2xl w-full">
             <div className="flex items-center">
               <FileText className="w-8 h-8 text-blue-500 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">Resume Zilla</h1>
+              <h1 className="text-2xl font-bold text-gray-900">write_yourself</h1>
             </div>
             <Button 
               variant="outline" 
@@ -184,7 +191,8 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children, fallback }) => {
         onOpenChange={setAuthDialogOpen}
         defaultMode={authMode}
       />
-    </div>
+      </div>
+    </>
   )
 }
 

@@ -65,7 +65,7 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-2 px-4 py-2">
           <Home className="h-6 w-6" />
-          <span className="font-semibold">Resume Zilla</span>
+          <span className="font-semibold">write_yourself</span>
         </div>
       </SidebarHeader>
       

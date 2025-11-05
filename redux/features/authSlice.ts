@@ -9,11 +9,31 @@ interface AuthState {
     isLoading: boolean
 }
 
+// Helper functions to safely access localStorage for SSR compatibility
+const getStorageItem = (key: string): string | null => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+        return localStorage.getItem(key)
+    }
+    return null
+}
+
+const setStorageItem = (key: string, value: string): void => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(key, value)
+    }
+}
+
+const removeStorageItem = (key: string): void => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem(key)
+    }
+}
+
 const initialState: AuthState = {
     user: null,
-    access_token: localStorage.getItem('access_token'),
-    refresh_token: localStorage.getItem('refresh_token'),
-    isAuthenticated: !!localStorage.getItem('access_token'),
+    access_token: getStorageItem('access_token'),
+    refresh_token: getStorageItem('refresh_token'),
+    isAuthenticated: !!getStorageItem('access_token'),
     isLoading: false
 }
 
@@ -32,9 +52,9 @@ const authSlice = createSlice({
             state.isAuthenticated = true
             
             // Store tokens in localStorage
-            localStorage.setItem('access_token', action.payload.access_token)
+            setStorageItem('access_token', action.payload.access_token)
             if (action.payload.refresh_token) {
-                localStorage.setItem('refresh_token', action.payload.refresh_token)
+                setStorageItem('refresh_token', action.payload.refresh_token)
             }
         },
         loginFailure: (state) => {
@@ -45,8 +65,8 @@ const authSlice = createSlice({
             state.isAuthenticated = false
             
             // Clear localStorage
-            localStorage.removeItem('access_token')
-            localStorage.removeItem('refresh_token')
+            removeStorageItem('access_token')
+            removeStorageItem('refresh_token')
         },
         logout: (state) => {
             state.user = null
@@ -56,8 +76,8 @@ const authSlice = createSlice({
             state.isLoading = false
             
             // Clear localStorage
-            localStorage.removeItem('access_token')
-            localStorage.removeItem('refresh_token')
+            removeStorageItem('access_token')
+            removeStorageItem('refresh_token')
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload
@@ -69,9 +89,9 @@ const authSlice = createSlice({
             }
             
             // Update localStorage
-            localStorage.setItem('access_token', action.payload.access_token)
+            setStorageItem('access_token', action.payload.access_token)
             if (action.payload.refresh_token) {
-                localStorage.setItem('refresh_token', action.payload.refresh_token)
+                setStorageItem('refresh_token', action.payload.refresh_token)
             }
         },
         updateSubscription: (state, action: PayloadAction<any>) => {

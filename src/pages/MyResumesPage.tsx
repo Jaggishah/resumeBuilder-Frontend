@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../redux/hooks'
 import { updateSections, updatePersonalInfo } from '../../redux/features/resumeSlice'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import { SEO } from '../components/SEO'
 
 export default function MyResumesPage() {
   const { data: resumes, isLoading, error } = useGetMyResumesQuery()
@@ -24,7 +25,13 @@ export default function MyResumesPage() {
   if (error) return <div className="text-red-600">Failed to load resumes</div>
 
   return (
-    <div>
+    <>
+      <SEO 
+        title="My Resumes - Manage Your Saved Resumes"
+        description="Access and manage all your saved resumes. Edit, update, or create new versions of your professional resumes with Write Yourself."
+        keywords="saved resumes, resume management, my resumes, resume library, resume history"
+      />
+      <div>
       {!resumes || resumes.length === 0 ? (
         <p className="text-gray-500">No saved resumes yet.</p>
       ) : (
@@ -77,6 +84,7 @@ export default function MyResumesPage() {
           </tbody>
         </table>
       )}
-    </div>
+      </div>
+    </>
   )
 }

@@ -1,5 +1,6 @@
 import { ResumeEditor } from '../components/ResumeEditor'
 import { ResumePDF } from '../components/ResumePDF'
+import ResumePDFNew from '../components/ResumePDFNew'
 import { ImportDialog } from '../components/ImportDialog'
 import { SEO } from '../components/SEO'
 import { useAppSelector } from '../../redux/hooks'
@@ -20,7 +21,7 @@ export function BuilderPage() {
 
   const handlePrintToPDF = async () => {
     try {
-      await downloadWithReactToPrint(resumeData.personalInfo.name || 'my-resume')
+      await downloadWithReactToPrint(resumeData.personalInfo.name || 'my-resume', resumeData.formatting)
     } catch (error) {
       console.error('Print to PDF failed:', error)
       alert('Print to PDF failed. Please try again.')
@@ -155,7 +156,9 @@ export function BuilderPage() {
             </div>
           </div>
           <div style={{ flex: 1, overflow: 'hidden' }}>
-            <ResumePDF />
+            {/* <ResumePDF />
+             */}
+            <ResumePDFNew />
           </div>
         </div>
         

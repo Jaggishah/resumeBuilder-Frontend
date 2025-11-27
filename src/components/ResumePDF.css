@@ -1,0 +1,349 @@
+/* Resume PDF Styles - Pure CSS for better download/print compatibility */
+
+/* Main Resume Container */
+.resume-container {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.page-wrapper {
+  border: 1px solid #d1d5db;
+  margin-bottom: 1.5rem;
+}
+
+.resume-page {
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto 20px auto;
+  padding: 10mm;
+  box-sizing: border-box;
+  font-size: 11px;
+  line-height: 1.4;
+  background-color: white;
+  page-break-after: always;
+}
+
+/* Header Styles */
+.resume-header {
+  border-bottom: 2px solid #1f2937;
+  padding-bottom: 12px; /* pb-3 = 0.75rem = 12px */
+  margin-bottom: 16px; /* mb-4 = 1rem = 16px */
+}
+
+.resume-header.no-divider {
+  border-bottom: none;
+  padding-bottom: 8px;
+}
+
+.resume-name {
+  font-size: 24px; /* text-2xl = 1.5rem = 24px */
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 4px; /* mb-1 = 0.25rem = 4px */
+}
+
+.resume-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* gap-2 = 0.5rem = 8px */
+  font-size: 12px; /* text-xs = 0.75rem = 12px */
+  color: #374151;
+}
+
+/* Header-specific text alignment classes */
+.resume-header .text-left {
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.resume-header .text-center {
+  text-align: center;
+  justify-content: center;
+}
+
+.resume-header .text-right {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.resume-contact a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.resume-contact a:hover {
+  text-decoration: underline;
+}
+
+/* Section Styles */
+.resume-section {
+  margin-bottom: 16px; /* mb-4 = 1rem = 16px */
+}
+
+.resume-section-title {
+  font-size: 14px; /* text-sm = 0.875rem = 14px */
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 8px; /* mb-2 = 0.5rem = 8px */
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  letter-spacing: 0.025em;
+}
+
+.resume-section-content > * + * {
+  margin-top: 4px; /* space-y-1 = 0.25rem = 4px */
+}
+
+/* Achievements list needs top margin (mt-1 = 4px) */
+ul.resume-section-content {
+  margin-top: 4px; /* mt-1 = 0.25rem = 4px */
+}
+
+/* Item Styles */
+.resume-item {
+  margin-bottom: 8px; /* mb-2 = 0.5rem = 8px */
+}
+
+.resume-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px; /* mb-1 = 0.25rem = 4px */
+}
+
+.resume-item-title {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 12px; /* text-xs = 0.75rem = 12px */
+}
+
+.resume-item-date {
+  font-size: 12px; /* text-xs = 0.75rem = 12px */
+  color: #4b5563;
+}
+
+.resume-item-company {
+  color: #374151;
+  font-style: italic;
+  font-size: 12px; /* text-xs = 0.75rem = 12px */
+}
+
+.resume-item-description {
+  font-size: 12px; /* text-xs = 0.75rem = 12px */
+  color: #374151;
+  margin-top: 4px; /* mt-1 = 0.25rem = 4px */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.625;
+}
+
+/* Skills/Bullet Item Styles */
+.resume-bullet-item {
+  display: flex;
+  font-size: 12px; /* text-xs = 0.75rem = 12px */
+}
+
+.resume-bullet {
+  margin-right: 8px; /* mr-2 = 0.5rem = 8px */
+}
+
+.resume-bullet-content {
+  color: #374151;
+  margin-left: 4px; /* ml-1 = 0.25rem = 4px */
+  word-wrap: break-word;
+}
+
+.resume-bullet-title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Professional Summary */
+.resume-summary {
+  font-size: 12px; /* text-xs = 0.75rem = 12px */
+  color: #374151;
+  line-height: 1.625;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+/* Measurement utilities */
+.measure-item {
+  margin-bottom: 8px;
+}
+
+/* Print Styles */
+@media print {
+  .resume-page {
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
+  }
+  
+  .page-wrapper {
+    border: none;
+    margin: 0;
+  }
+  
+  .resume-container {
+    overflow: visible;
+  }
+}
+
+/* Line-by-line component specific styles */
+.resume-line {
+  display: block;
+}
+
+.resume-spacing,
+.resume-item-spacing,
+.resume-section-spacing {
+  display: block;
+  height: 8px;
+}
+
+.resume-section-spacing {
+  height: 16px;
+}
+
+.resume-measure-container {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  visibility: hidden;
+  width: 190mm; /* page width minus padding */
+  padding: 10mm;
+  box-sizing: border-box;
+  font-size: 11px;
+  line-height: 1.4;
+  background-color: white;
+}
+
+.measure-line {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.resume-pages {
+  display: block;
+}
+
+.resume-pdf-container {
+  position: relative;
+}
+
+.resume-page-content {
+  display: block;
+}
+
+/* Summary specific styles removed - using main definition above */
+
+/* Line-by-line breaking support */
+.resume-line-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.resume-summary-line, 
+.resume-item-description-line {
+  margin: 0;
+  padding: 0;
+  line-height: 1.625;
+  font-size: 12px;
+  color: #374151;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* Layout Spacing Options */
+.layout-compact {
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.layout-compact .resume-section {
+  margin-bottom: 12px;
+}
+
+.layout-compact .resume-section-title {
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.layout-compact .resume-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+}
+
+.layout-standard {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.layout-relaxed {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.layout-relaxed .resume-section {
+  margin-bottom: 20px;
+}
+
+.layout-relaxed .resume-section-title {
+  margin-bottom: 10px;
+}
+
+.layout-relaxed .resume-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+}
+
+/* Font Size Options */
+.font-small {
+  font-size: 10px;
+}
+
+.font-medium {
+  font-size: 11px;
+}
+
+.font-large {
+  font-size: 12px;
+}
+
+/* Section Spacing Options */
+.sections-tight .resume-section {
+  margin-bottom: 10px;
+}
+
+.sections-normal .resume-section {
+  margin-bottom: 16px;
+}
+
+.sections-loose .resume-section {
+  margin-bottom: 22px;
+}
+
+/* Section Borders */
+.sections-bordered .resume-section {
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .resume-page {
+    width: 100%;
+    height: auto;
+    min-height: 297mm;
+    padding: 5mm;
+  }
+  
+  .resume-contact {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}

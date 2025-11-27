@@ -69,7 +69,7 @@ function AppRoutes() {
                 <Route path="/" element={<Dashboard />}>
                   <Route path="builder" element={<BuilderPage />} />
                   <Route path="my_resumes" element={<MyResumesPage />} />
-                  <Route path="ats_checker" element={<ATSCheckerPage />} />
+                  {/* <Route path="ats_checker" element={<ATSCheckerPage />} /> */}
                   <Route path="feedback" element={<FeedbackPage />} />
                   {/* <Route path="templates" element={<TemplatesPage />} /> */}
                   {/* <Route path="download" element={<DownloadPage />} /> */}

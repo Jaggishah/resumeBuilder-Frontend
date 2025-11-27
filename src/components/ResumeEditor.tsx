@@ -1,6 +1,10 @@
+import React, { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { AccordionWrapper } from './AccordionWrapper'
 import { AddSectionDialog } from './AddSectionDialog'
+import { FormattingControls } from './FormattingControls'
+import { Button } from '@/components/ui/button'
+import { Settings, Edit3 } from 'lucide-react'
 import { 
   type DynamicSection,
   type SectionItem,
@@ -15,6 +19,7 @@ import QuickSelection from './QuickSelection'
 export function ResumeEditor() {
   const dispatch = useAppDispatch()
   const dynamicSections = useAppSelector(state => state.resume.dynamicSections)
+  const [showFormatting, setShowFormatting] = useState(false)
 
   const handleSectionReorder = (reorderedSections: DynamicSection[]) => {
     console.log('Sections reordered:', reorderedSections.map(s => s.title))
@@ -138,32 +143,68 @@ export function ResumeEditor() {
   return (
     // Constrain editor height so preview stays visible; make it scrollable when content overflows
     <div className="p-6 max-w-full" style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}>
-      <AccordionWrapper 
-        onReorder={handleSectionReorder}
-        onAddItem={handleAddItem}
-        onUpdateItem={handleUpdateItem}
-        onRemoveItem={handleRemoveItem}
-        onAddAchievement={handleAddAchievement}
-        onUpdateAchievement={handleUpdateAchievement}
-        onRemoveAchievement={handleRemoveAchievement}
-        onRemoveSection={handleRemoveSection}
-        onUpdateSection={handleUpdateSection}
-      />
-
-      {/* Add Section Button at the bottom */}
-      <div className="flex flex-col gap-4 items-center mt-6">
-        <QuickSelection 
-          handleAddSection={handleAddSection}
-          existingSections={dynamicSections}
-        />
-        
-        <div className="mt-3">
-          <AddSectionDialog 
-            onAddSection={handleAddSection} 
-            existingSections={dynamicSections}
-          />
-        </div>
+      {/* Toggle Button */}
+      <div className="mb-4 flex justify-between items-center">
+        <h3 className="text-lg font-medium text-gray-900">
+          {showFormatting ? 'Format Options' : 'Edit Resume'}
+        </h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowFormatting(!showFormatting)}
+          className="flex items-center gap-2"
+        >
+          {showFormatting ? (
+            <>
+              <Edit3 className="h-4 w-4" />
+              Edit Content
+            </>
+          ) : (
+            <>
+              <Settings className="h-4 w-4" />
+              Format Style
+            </>
+          )}
+        </Button>
       </div>
+
+      {/* Conditional Content */}
+      {showFormatting ? (
+        // Formatting Controls View
+        <div className="space-y-4">
+          <FormattingControls />
+        </div>
+      ) : (
+        // Resume Editor Content View
+        <>
+          <AccordionWrapper 
+            onReorder={handleSectionReorder}
+            onAddItem={handleAddItem}
+            onUpdateItem={handleUpdateItem}
+            onRemoveItem={handleRemoveItem}
+            onAddAchievement={handleAddAchievement}
+            onUpdateAchievement={handleUpdateAchievement}
+            onRemoveAchievement={handleRemoveAchievement}
+            onRemoveSection={handleRemoveSection}
+            onUpdateSection={handleUpdateSection}
+          />
+
+          {/* Add Section Button at the bottom */}
+          <div className="flex flex-col gap-4 items-center mt-6">
+            <QuickSelection 
+              handleAddSection={handleAddSection}
+              existingSections={dynamicSections}
+            />
+            
+            <div className="mt-3">
+              <AddSectionDialog 
+                onAddSection={handleAddSection} 
+                existingSections={dynamicSections}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

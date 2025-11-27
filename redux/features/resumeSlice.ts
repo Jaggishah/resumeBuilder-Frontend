@@ -31,11 +31,21 @@ export interface DynamicSection {
   items: SectionItem[]
 }
 
+// Formatting options interface
+export interface FormattingOptions {
+  header: {
+    nameAlignment: 'left' | 'center' | 'right'
+    contactAlignment: 'left' | 'center' | 'right'
+    showDivider: boolean
+  }
+}
+
 
 export interface ResumeState {
   personalInfo: PersonalInfo
   dynamicSections: DynamicSection[]
   activeSection: string
+  formatting: FormattingOptions
 }
 
 const initialState: ResumeState = {
@@ -48,6 +58,13 @@ const initialState: ResumeState = {
     linkedin: '',
     github: '',
     additionalLinks: []
+  },
+  formatting: {
+    header: {
+      nameAlignment: 'left',
+      contactAlignment: 'left',
+      showDivider: true
+    }
   },
   dynamicSections: [
     {
@@ -314,6 +331,15 @@ const resumeSlice = createSlice({
     },
     setActiveSection: (state, action: PayloadAction<string>) => {
       state.activeSection = action.payload
+    },
+    updateFormatting: (state, action: PayloadAction<Partial<FormattingOptions>>) => {
+      state.formatting = { ...state.formatting, ...action.payload }
+    },
+    updateFormattingSection: (state, action: PayloadAction<{ section: keyof FormattingOptions; data: any }>) => {
+      (state.formatting as any)[action.payload.section] = { 
+        ...(state.formatting as any)[action.payload.section], 
+        ...action.payload.data 
+      }
     }
   }
 })
@@ -329,7 +355,9 @@ export const {
   addSectionItem,
   updateSectionItem,
   removeSectionItem,
-  setActiveSection
+  setActiveSection,
+  updateFormatting,
+  updateFormattingSection
 } = resumeSlice.actions
 
 // Types are already exported above

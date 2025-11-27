@@ -5,6 +5,12 @@ import { Plus, Minus } from 'lucide-react'
 import { useCallback } from 'react'
 import { AIEnhanceButton } from './AIEnhanceButton'
 import { AICustomPromptButton } from './AICustomPromptButton'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
 // Section item interface
 interface SectionItem {
@@ -62,7 +68,7 @@ export const CustomSection = ({
         </div>
       )}
       
-      <div className={config.hasDuration ? '' : 'md:col-span-2'}>
+      <div className={ 'md:col-span-2'}>
         <div className="flex justify-between items-center mb-1">
           <label className="block text-sm font-medium text-gray-700">Description</label>
           <div className="flex gap-2">
@@ -101,15 +107,6 @@ export const CustomSection = ({
       <div className="space-y-3 mt-4">
         <div className="flex justify-between items-center">
           <label className="block text-sm font-medium text-gray-700">Achievements</label>
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            onClick={() => onAddAchievement?.(item.id)}
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Add Achievement
-          </Button>
         </div>
         
         {achievements.map((achievement: string, index: number) => (
@@ -134,7 +131,7 @@ export const CustomSection = ({
                 <Button
                   type="button"
                   size="sm"
-                  variant="ghost"
+                  variant="destructive"
                   onClick={() => onRemoveAchievement?.(item.id, index)}
                   className="self-start"
                 >
@@ -157,35 +154,53 @@ export const CustomSection = ({
             No achievements added yet.
           </p>
         )}
+        
+        <div className="flex justify-end items-center pt-2">
+      
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => onAddAchievement?.(item.id)}
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add Achievement
+          </Button>
+        </div>
       </div>
     )
   }, [config.hasAchievements, onAddAchievement, onUpdateAchievement, onRemoveAchievement])
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <Button onClick={onAdd} size="sm">
-          <Plus className="h-4 w-4 mr-2" />
-          Add {config.title}
-        </Button>
-      </div>
+
       
       <div className="space-y-6">
-        {data.map((item) => (
-          <div key={item.id} className="border border-gray-200 rounded-lg p-4 space-y-4">
-            <div className="flex justify-between items-start">
-              <h3 className="font-medium text-gray-900">{config.title} Entry</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onRemove(item.id)}
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-            </div>
-            
-            {renderBasicFields(item)}
-            {renderAchievements(item)}
+        {data.map((item,index) => (
+          <div key={item.id} className="border border-gray-200 rounded-lg">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value={`item-${item.id}`} className="border-none">
+                <div className="flex justify-between items-center px-4 py-3">
+                  <AccordionTrigger className="flex-1 text-left hover:no-underline py-0">
+                    <h3 className="font-medium text-gray-900">{config.title} Entry {index + 1}</h3>
+                  </AccordionTrigger>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onRemove(item.id)
+                    }}
+                    className="ml-2"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <AccordionContent className="px-4 pb-4 space-y-4">
+                  {renderBasicFields(item)}
+                  {renderAchievements(item)}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         ))}
         
@@ -196,6 +211,12 @@ export const CustomSection = ({
           </div>
         )}
       </div>
+      <div className="flex justify-center align-center">
+      <Button onClick={onAdd} size="sm">
+        <Plus className="h-4 w-4 mr-2" />
+        Add {config.title}
+      </Button>
     </div>
-  )
+  </div>
+)
 }

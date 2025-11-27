@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { AuthForm } from './AuthForm'
 
@@ -13,8 +14,11 @@ export const AuthDialog: React.FC<AuthDialogProps> = ({
   onOpenChange, 
   defaultMode = 'login' 
 }) => {
+  const navigate = useNavigate()
+
   const handleSuccess = () => {
     onOpenChange(false)
+    navigate('/builder')
   }
 
   return (

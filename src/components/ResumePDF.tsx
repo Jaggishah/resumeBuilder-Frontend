@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { useAppSelector } from '../../redux/hooks'
+import './ResumePDF.css'
 
 // Define the content section type
 interface ContentSection {
@@ -14,7 +15,7 @@ interface ContentSection {
 
 // Resume Preview Component with Dynamic Multi-page Support
 export const ResumePDF = () => {
-  const { personalInfo, dynamicSections } = useAppSelector(state => state.resume)
+  const { personalInfo, dynamicSections, formatting } = useAppSelector(state => state.resume)
 
   // State holding generated content sections (with JSX content)
   const [sections, setSections] = useState<ContentSection[]>([])
@@ -142,21 +143,23 @@ export const ResumePDF = () => {
       type: 'header',
       estimatedHeight: 70, // ~80px
       content: (
-        <header className="border-b-2 border-gray-800 pb-3 mb-4">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">{personalInfo.name ? personalInfo.name : "---"}</h1>
-          <div className="flex flex-wrap gap-2 text-xs text-gray-700">
+        <header className={`resume-header ${!formatting.header.showDivider ? 'no-divider' : ''}`}>
+          <h1 className={`resume-name text-${formatting.header.nameAlignment}`}>
+            {personalInfo.name ? personalInfo.name : "---"}
+          </h1>
+          <div className={`resume-contact text-${formatting.header.contactAlignment}`}>
             <span>{personalInfo.email ? personalInfo.email : "---"}</span>
             <span>|</span>
             <span>{personalInfo.phone ? personalInfo.phone : "---"}</span>
             {personalInfo.location && (<span>|</span>)}
             {personalInfo.location && (<span>{personalInfo.location}</span>)}
             {personalInfo.linkedin && (<span>|</span>)}
-            {personalInfo.linkedin && (<a href={`${personalInfo.linkedin}`} className="hover:underline">LinkedIn</a>)}
+            {personalInfo.linkedin && (<a href={`${personalInfo.linkedin}`}>LinkedIn</a>)}
             {personalInfo.github && (<span>|</span>)}
-            {personalInfo.github && (<a href={`${personalInfo.github}`} className="hover:underline">GitHub</a>)}
+            {personalInfo.github && (<a href={`${personalInfo.github}`}>GitHub</a>)}
             {personalInfo.additionalLinks && personalInfo.additionalLinks.length > 0 && personalInfo.additionalLinks.map((link, idx) => (
               <React.Fragment key={idx}>
-                <span>|</span><a href={`${link.url}`} className="hover:underline">{link.label}</a>
+                <span>|</span><a href={`${link.url}`}>{link.label}</a>
               </React.Fragment>
             ))}
           </div>
@@ -170,9 +173,9 @@ export const ResumePDF = () => {
         type: 'header',
         estimatedHeight: 40 + (Math.ceil(personalInfo.summary.length / 100) * 16), // Dynamic height based on summary length
         content: (
-          <section className="mb-4">
-            <h2 className="text-sm font-bold text-gray-900 mb-2 uppercase tracking-wide">Professional Summary</h2>
-            <div className="text-xs text-gray-700 leading-relaxed whitespace-pre-line break-words">
+          <section className="resume-section">
+            <h2 className="resume-section-title">Professional Summary</h2>
+            <div className="resume-summary">
               {personalInfo.summary}
             </div>
           </section>
@@ -192,43 +195,43 @@ export const ResumePDF = () => {
           type: section.template as any,
           estimatedHeight: 20 + (section.items.length * 20),
           content: (
-            <section className="mb-4">
-              <h2 className="text-sm font-bold text-gray-900 mb-2 uppercase tracking-wide">{section.title}</h2>
-              <div className="space-y-1">
+            <section className="resume-section">
+              <h2 className="resume-section-title">{section.title}</h2>
+              <div className="resume-section-content">
                 {section.items.map((item: any, idx: number) => (
-                  <div key={idx}>
+                  <div key={idx} className="resume-item">
                     {section.hasDuration ? (
                       // Format with duration (like education, certifications with dates)
                       <div>
-                        <div className="flex justify-between items-start mb-1">
-                          <h3 className="font-semibold text-gray-900 text-xs">{item.title || item.degree || item.name || 'Item Title'}</h3>
-                          <span className="text-xs text-gray-600">{item.duration || item.year || item.date || ''}</span>
+                        <div className="resume-item-header">
+                          <h3 className="resume-item-title">{item.title || item.degree || item.name || 'Item Title'}</h3>
+                          <span className="resume-item-date">{item.duration || item.year || item.date || ''}</span>
                         </div>
                         {(item.company || item.institution || item.school || item.issuer) && (
-                          <p className="text-gray-700 italic text-xs">{item.company || item.institution || item.school || item.issuer}</p>
+                          <p className="resume-item-company">{item.company || item.institution || item.school || item.issuer}</p>
                         )}
                         {item.description && (
-                          <p className="text-xs text-gray-700 mt-1 whitespace-pre-wrap break-words leading-relaxed">{item.description}</p>
+                          <p className="resume-item-description">{item.description}</p>
                         )}
                       </div>
                     ) : (
                       // Format without duration (like skills, simple lists)
-                      <div className="flex text-xs">
-                        <span className="mr-2">●</span>
-                        <div>
+                      <div className="resume-bullet-item">
+                        <span className="resume-bullet">●</span>
+                        <div className="resume-bullet-content">
                           {item.title && (
-                            <span className="font-semibold text-gray-900">{item.title}:</span>
+                            <span className="resume-bullet-title">{item.title}:</span>
                           )}
-                          <span className="text-gray-700 ml-1 break-words">{item.description || item.skillsList || item.name || 'Description'}</span>
+                          <span>{item.description || item.skillsList || item.name || 'Description'}</span>
                         </div>
                       </div>
                     )}
                     {section.hasAchievements && item.achievements && item.achievements.length > 0 && (
-                      <ul className="space-y-1 mt-1">
+                      <ul className="resume-section-content">
                         {item.achievements.map((achievement: string, i: number) => (
-                          <li key={i} className="flex text-xs">
-                            <span className="mr-2">●</span>
-                            <span className="text-gray-700 whitespace-pre-wrap break-words leading-relaxed">{achievement}</span>
+                          <li key={i} className="resume-bullet-item">
+                            <span className="resume-bullet">●</span>
+                            <span className="resume-bullet-content">{achievement}</span>
                           </li>
                         ))}
                       </ul>
@@ -243,6 +246,130 @@ export const ResumePDF = () => {
     })
 
     return sections
+  }
+
+  // Helper function to break an individual item line by line
+  const breakItemLineByLine = (item: React.ReactElement, availableHeight: number, lineHeight: number): React.ReactElement[] => {
+    if (!React.isValidElement(item)) return [item]
+    
+    const props = item.props as any
+    if (!props?.children) return [item]
+    
+    console.log(`Breaking item line by line - available height: ${availableHeight}px, line height: ${lineHeight}px`)
+    
+    // Look for bullet points or achievements that can be broken line by line
+    if (props.className === 'resume-item') {
+      const children = Array.isArray(props.children) ? props.children : [props.children]
+      console.log('Found resume-item with children:', children.length)
+      
+      // Look for achievements list (ul element with class resume-section-content)
+      let achievementsListIndex = -1
+      let achievementsList = null
+      
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i]
+        if (React.isValidElement(child) && 
+            child.type === 'ul' && 
+            (child.props as any)?.className === 'resume-section-content') {
+          achievementsList = child
+          achievementsListIndex = i
+          break
+        }
+      }
+      
+      if (achievementsList && React.isValidElement(achievementsList)) {
+        const achievementsProps = achievementsList.props as any
+        const achievements = Array.isArray(achievementsProps.children) ? achievementsProps.children : [achievementsProps.children]
+        
+        console.log(`Found ${achievements.length} achievements to potentially break`)
+        
+        if (achievements.length > 1) {
+          const maxLines = Math.floor(availableHeight / lineHeight)
+          console.log(`Can fit ${maxLines} lines in available space, have ${achievements.length} achievements`)
+          
+          // Break if we can fit at least 1 achievement in available space
+          // This allows us to put some content on current page instead of moving everything
+          if (maxLines >= 1) {
+            console.log(`Breaking achievements: ${achievements.length} total, ${maxLines} per chunk`)
+            console.log(`Available height: ${availableHeight}px, Line height: ${lineHeight}px, Max lines: ${maxLines}`)
+            
+            const parts: React.ReactElement[] = []
+            
+            // Create chunks of achievements
+            for (let startIndex = 0; startIndex < achievements.length; startIndex += maxLines) {
+              const endIndex = Math.min(startIndex + maxLines, achievements.length)
+              const currentAchievements = achievements.slice(startIndex, endIndex)
+              
+              console.log(`Creating part with achievements ${startIndex} to ${endIndex - 1} (${currentAchievements.length} items)`)
+              
+              // Clone the item with this chunk of achievements
+              const newChildren = [...children]
+              newChildren[achievementsListIndex] = React.cloneElement(achievementsList, {
+                ...achievementsProps,
+                children: currentAchievements
+              })
+              
+              parts.push(React.cloneElement(item, {
+                ...props,
+                children: newChildren
+              }))
+            }
+            
+            console.log(`Created ${parts.length} parts from breaking achievements`)
+            return parts
+          }
+        }
+      } else {
+        console.log('No achievements list found in item')
+        
+        // Try to break long descriptions or other text content
+        const maxLines = Math.floor(availableHeight / lineHeight)
+        if (maxLines >= 1) {
+          console.log(`Trying to break item content into ${maxLines} line chunks`)
+          
+          // Look for description elements that might be long
+          for (let i = 0; i < children.length; i++) {
+            const child = children[i]
+            if (React.isValidElement(child) && 
+                (child.props as any)?.className === 'resume-item-description') {
+              const description = (child.props as any)?.children
+              if (typeof description === 'string' && description.length > 100) {
+                console.log('Found long description, attempting to truncate for first part')
+                
+                // Estimate how much text can fit
+                const maxChars = Math.floor(maxLines * 80) // Rough estimate: 80 chars per line
+                if (maxChars > 50 && maxChars < description.length) {
+                  // Create first part with truncated description
+                  const firstPart = description.substring(0, maxChars) + '...'
+                  const secondPart = '...' + description.substring(maxChars)
+                  
+                  const newChildren1 = [...children]
+                  const newChildren2 = [...children]
+                  
+                  newChildren1[i] = React.cloneElement(child, {
+                    ...(child.props as any),
+                    children: firstPart
+                  })
+                  
+                  newChildren2[i] = React.cloneElement(child, {
+                    ...(child.props as any),
+                    children: secondPart
+                  })
+                  
+                  return [
+                    React.cloneElement(item, { ...props, children: newChildren1 }),
+                    React.cloneElement(item, { ...props, children: newChildren2 })
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    console.log('Item could not be broken, returning as single item')
+    return [item]
   }
 
   // Helper function to break down large sections into smaller chunks using pre-measured data
@@ -290,83 +417,117 @@ export const ResumePDF = () => {
               let currentChunkHeight = 0
               let isFirstChunk = true
               
-              // Pack items optimally into chunks based on actual measurements
+              // Pack items line-by-line into chunks based on actual measurements
               for (let i = 0; i < items.length; i++) {
                 const itemHeight = itemHeights[i] || avgItemHeight
                 const headerHeightForChunk = isFirstChunk ? headerHeight : 0
-                const wouldExceedHeight = currentChunkHeight + itemHeight + headerHeightForChunk > maxHeight 
-                console.log(`Item ${i} (height: ${itemHeight}) would exceed chunk height: ${wouldExceedHeight} - ${currentChunkHeight}px + ${itemHeight}px + ${headerHeightForChunk}px > ${maxHeight}px`)
                 
-                // If adding this item would exceed max height
-                if (wouldExceedHeight) {
-                  // If this is the first item and it would exceed even with header
-                  if (isFirstChunk && currentChunkItems.length === 0) {
-                    console.log(`First item ${i} would exceed. Checking if header alone fits...`)
-                    console.log('headerHeight:', headerHeight, 'maxHeight:', maxHeight)
-                    // Check if header alone fits
-                    if (headerHeight <= maxHeight) {
-                      console.log(`Header alone fits (${headerHeight}px). Creating header-only chunk.`)
+                // Check if item fits on current page
+                if (currentChunkHeight + itemHeight + headerHeightForChunk <= maxHeight) {
+                  console.log(`Adding item ${i} to current chunk (fits: ${currentChunkHeight + itemHeight + headerHeightForChunk}px <= ${maxHeight}px)`)
+                  // Item fits, add it to current chunk
+                  currentChunkItems.push(items[i])
+                  currentChunkHeight += itemHeight
+                } else {
+                  // Item doesn't fit, try to break it line-by-line
+                  console.log(`Item ${i} (height: ${itemHeight}px) would exceed page. Attempting line-by-line break...`)
+                  
+                  const availableSpace = maxHeight - currentChunkHeight - headerHeightForChunk
+                  const brokenItems = breakItemLineByLine(items[i], availableSpace, 17) // Assume 17px per line
+                  console.log(`Item ${i} broken into ${brokenItems.length} parts (available space: ${availableSpace}px)`)
+                  if (brokenItems.length > 1) {
+                    console.log(`Successfully broke item ${i} into ${brokenItems.length} parts`)
+                    
+                    // Add first part to current chunk if there's space
+                    if (brokenItems[0] && currentChunkHeight + 17 + headerHeightForChunk <= maxHeight) {
+                      currentChunkItems.push(brokenItems[0])
+                      currentChunkHeight += 17
+                    }
+                    
+                    // Create chunk with current items
+                    if (currentChunkItems.length > 0) {
+                      const chunkChildren = isFirstChunk 
+                        ? [headerElement, React.cloneElement(contentElement, {
+                            ...contentProps,
+                            children: currentChunkItems
+                          })]
+                        : [React.cloneElement(contentElement, {
+                            ...contentProps,
+                            children: currentChunkItems
+                          })]
                       
-                      // Create header-only chunk for current page
                       chunks.push({
                         ...section,
-                        estimatedHeight: headerHeight,
-                        measuredHeight: headerHeight,
+                        estimatedHeight: Math.min(currentChunkHeight + (isFirstChunk ? headerHeight : 0), maxHeight),
+                        measuredHeight: Math.min(currentChunkHeight + (isFirstChunk ? headerHeight : 0), maxHeight),
                         content: React.cloneElement(sectionContent, {
                           ...props,
-                          children: [headerElement] // Only header
+                          children: chunkChildren
+                        })
+                      })
+                    }
+                    
+                    // Start new chunk with remaining broken parts
+                    currentChunkItems = brokenItems.slice(1)
+                    currentChunkHeight = (brokenItems.length - 1) * 17
+                    isFirstChunk = false
+                  } else {
+                    // Couldn't break item, handle as before
+                    if (isFirstChunk && currentChunkItems.length === 0) {
+                      console.log(`First item ${i} can't be broken and would exceed. Checking if header alone fits...`)
+                      if (headerHeight <= maxHeight) {
+                        console.log(`Header alone fits (${headerHeight}px). Creating header-only chunk.`)
+                        
+                        chunks.push({
+                          ...section,
+                          estimatedHeight: headerHeight,
+                          measuredHeight: headerHeight,
+                          content: React.cloneElement(sectionContent, {
+                            ...props,
+                            children: [headerElement]
+                          })
+                        })
+                        
+                        currentChunkItems = [items[i]]
+                        currentChunkHeight = itemHeight
+                        isFirstChunk = false
+                        continue
+                      } else {
+                        console.log(`Header doesn't fit either. Moving full section to next page.`)
+                        chunks.push(section)
+                        return chunks
+                      }
+                    }
+                    
+                    // Create chunk with current items, then start new chunk
+                    if (currentChunkItems.length > 0) {
+                      console.log(`Creating chunk with ${currentChunkItems.length} items, moving item ${i} to next chunk`)
+                      
+                      const chunkChildren = isFirstChunk 
+                        ? [headerElement, React.cloneElement(contentElement, {
+                            ...contentProps,
+                            children: currentChunkItems
+                          })]
+                        : [React.cloneElement(contentElement, {
+                            ...contentProps,
+                            children: currentChunkItems
+                          })]
+                      
+                      chunks.push({
+                        ...section,
+                        estimatedHeight: Math.min(currentChunkHeight + (isFirstChunk ? headerHeight : 0), maxHeight),
+                        measuredHeight: Math.min(currentChunkHeight + (isFirstChunk ? headerHeight : 0), maxHeight),
+                        content: React.cloneElement(sectionContent, {
+                          ...props,
+                          children: chunkChildren
                         })
                       })
                       
-                      // Start new chunk with current item (no header needed for continuation)
                       currentChunkItems = [items[i]]
                       currentChunkHeight = itemHeight
-                      isFirstChunk = false // Next chunk won't have header
-                      continue
-                    } else {
-                      console.log(`Header doesn't fit either (${headerHeight}px > ${maxHeight}px). Moving full section to next page.`)
-                      
-                      // Header doesn't fit, move entire section to next page
-                      chunks.push(section) // Full section for next page
-                      console.log(`Moved full section to next page`)
-                      return chunks // Exit early since we've moved the whole section
+                      isFirstChunk = false
                     }
                   }
-                  
-                  // If we have items in current chunk, create a chunk with them first
-                  if (currentChunkItems.length > 0) {
-                    console.log(`Creating chunk with ${currentChunkItems.length} items, moving item ${i} to next chunk`)
-                    
-                    const chunkChildren = isFirstChunk 
-                      ? [headerElement, React.cloneElement(contentElement, {
-                          ...contentProps,
-                          children: currentChunkItems
-                        })]
-                      : [React.cloneElement(contentElement, {
-                          ...contentProps,
-                          children: currentChunkItems
-                        })]
-                    
-                    chunks.push({
-                      ...section,
-                      estimatedHeight: Math.min(currentChunkHeight + (isFirstChunk ? headerHeight : 0), maxHeight ),
-                      measuredHeight: Math.min(currentChunkHeight + (isFirstChunk ? headerHeight : 0), maxHeight ),
-                      content: React.cloneElement(sectionContent, {
-                        ...props,
-                        children: chunkChildren
-                      })
-                    })
-                    
-                    // Start new chunk with the item that would exceed
-                    currentChunkItems = [items[i]]
-                    currentChunkHeight = itemHeight
-                    isFirstChunk = false
-                  }
-                } else {
-                  console.log(`Adding item ${i} to current chunk`)
-                  // Add item to current chunk
-                  currentChunkItems.push(items[i])
-                  currentChunkHeight += itemHeight
                 }
               }
               
@@ -501,18 +662,22 @@ export const ResumePDF = () => {
 
   // Create a page element from sections
   const createPageElement = (sections: ContentSection[], pageNumber: number): React.ReactElement => {
+    // Build classes based on formatting options
+    const layoutClass = `layout-${formatting.layout.spacing}`
+    const fontClass = `font-${formatting.layout.fontSize}`
+    const sectionSpacingClass = `sections-${formatting.sections.sectionSpacing}`
+    const sectionBordersClass = formatting.sections.showBorders ? 'sections-bordered' : ''
+    
+    const resumePageClasses = [
+      'resume-page',
+      layoutClass,
+      fontClass,
+      sectionSpacingClass,
+      sectionBordersClass
+    ].filter(Boolean).join(' ')
+
     return (
-      <div className="resume-page" style={{
-        width: '210mm',
-        height: '297mm',
-        margin: '0 auto 20px auto', 
-        padding: '10mm',
-        boxSizing: 'border-box',
-        fontSize: '11px',
-        lineHeight: '1.4',
-        backgroundColor: 'white',
-        pageBreakAfter: 'always'
-      }}>
+      <div className={resumePageClasses}>
         {sections.map((section, index) => 
           React.cloneElement(section.content, { key: `${section.type}-${index}-page${pageNumber}` })
         )}
@@ -522,14 +687,9 @@ export const ResumePDF = () => {
 
   return (
     <>
-      <div className="resume-container" style={{
-        height: '100%',
-        overflowY: 'auto',
-        overflowX: 'auto',
-    
-      }}>
+      <div className="resume-container">
         {pages.map((page, index) => (
-          <div key={index} className="page-wrapper border border-gray-300 mb-6">
+          <div key={index} className="page-wrapper">
             {page}
           </div>
         ))}
@@ -553,10 +713,8 @@ export const ResumePDF = () => {
         }}
       >
         {sections.map((section, idx) => (
-          <div key={idx} className="measure-item" style={{ marginBottom: '8px' }}>
-            <div className="measure-item-content">
-              {React.cloneElement(section.content as React.ReactElement)}
-            </div>
+          <div key={idx} className="measure-item">
+            {React.cloneElement(section.content as React.ReactElement)}
           </div>
         ))}
       </div>

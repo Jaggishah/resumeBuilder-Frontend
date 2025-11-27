@@ -34,12 +34,12 @@ const sidebarItems = [
     icon: Plus,
     description: 'Choose template'
   },
-  {
-    id: 'ATS_checker',
-    label: 'ATS Checker - [beta]',
-    icon: Eye,
-    description: 'ATS Resume Analysis'
-  },
+  // {
+  //   id: 'ATS_checker',
+  //   label: 'ATS Checker - [beta]',
+  //   icon: Eye,
+  //   description: 'ATS Resume Analysis'
+  // },
   {
     id: 'feedback',
     label: 'Feedback',

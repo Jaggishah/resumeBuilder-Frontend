@@ -1,4 +1,4 @@
-import { FileText, Eye, Plus, Home, CreditCard, Clock, RotateCcw, MessageSquare } from 'lucide-react'
+import { FileText, Plus, Home, CreditCard, Clock, RotateCcw, MessageSquare } from 'lucide-react'
 
 import {
   Sidebar,

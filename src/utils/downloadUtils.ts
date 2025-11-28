@@ -1,6 +1,6 @@
 
 // Simple HTML-to-PDF download function
-export const downloadWithReactToPrint = async (filename: string = 'resume', formatting?: any) => {
+export const downloadWithReactToPrint = async (filename: string = 'resume') => {
   const resumeContainer = document.querySelector('.resume-container') as HTMLElement
   
   if (!resumeContainer) {

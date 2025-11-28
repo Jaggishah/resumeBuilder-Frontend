@@ -6,7 +6,7 @@ import { store } from '../redux/store'
 import { Dashboard } from "./components/Dashboard"
 import { BuilderPage } from './pages/BuilderPage'
 import MyResumesPage from './pages/MyResumesPage'
-import { ATSCheckerPage } from './pages/ATSCheckerPage'
+// import { ATSCheckerPage } from './pages/ATSCheckerPage'
 import { FeedbackPage } from './pages/FeedbackPage'
 import { AuthGuard } from './components/AuthGuard'
 import { useTokenRefresh } from './hooks/useTokenRefresh'

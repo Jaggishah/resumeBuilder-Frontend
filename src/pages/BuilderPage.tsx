@@ -1,5 +1,5 @@
 import { ResumeEditor } from '../components/ResumeEditor'
-import { ResumePDF } from '../components/ResumePDF'
+// import { ResumePDF } from '../components/ResumePDF'
 import ResumePDFNew from '../components/ResumePDFNew'
 import { ImportDialog } from '../components/ImportDialog'
 import { SEO } from '../components/SEO'
@@ -21,7 +21,7 @@ export function BuilderPage() {
 
   const handlePrintToPDF = async () => {
     try {
-      await downloadWithReactToPrint(resumeData.personalInfo.name || 'my-resume', resumeData.formatting)
+      await downloadWithReactToPrint(resumeData.personalInfo.name || 'my-resume')
     } catch (error) {
       console.error('Print to PDF failed:', error)
       alert('Print to PDF failed. Please try again.')

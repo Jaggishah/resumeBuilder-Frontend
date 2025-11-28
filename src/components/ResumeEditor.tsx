@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { AccordionWrapper } from './AccordionWrapper'
 import { AddSectionDialog } from './AddSectionDialog'

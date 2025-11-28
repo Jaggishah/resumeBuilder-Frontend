@@ -1,9 +1,9 @@
-import React from 'react'
+// import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { updateFormattingSection } from '../../redux/features/resumeSlice'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+// import { Separator } from '@/components/ui/separator'
 import { Settings, AlignLeft, AlignCenter, AlignRight } from 'lucide-react'
 
 export function FormattingControls() {

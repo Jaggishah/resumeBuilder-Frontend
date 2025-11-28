@@ -663,17 +663,14 @@ export const ResumePDF = () => {
   // Create a page element from sections
   const createPageElement = (sections: ContentSection[], pageNumber: number): React.ReactElement => {
     // Build classes based on formatting options
-    const layoutClass = `layout-${formatting.layout.spacing}`
-    const fontClass = `font-${formatting.layout.fontSize}`
-    const sectionSpacingClass = `sections-${formatting.sections.sectionSpacing}`
-    const sectionBordersClass = formatting.sections.showBorders ? 'sections-bordered' : ''
+    const headerAlignClass = `header-${formatting.header.nameAlignment}`
+    const headerDividerClass = formatting.header.showDivider ? 'header-divider' : ''
+    // Removed layout and sections formatting as they were removed from the interface
     
     const resumePageClasses = [
       'resume-page',
-      layoutClass,
-      fontClass,
-      sectionSpacingClass,
-      sectionBordersClass
+      headerAlignClass,
+      headerDividerClass
     ].filter(Boolean).join(' ')
 
     return (
